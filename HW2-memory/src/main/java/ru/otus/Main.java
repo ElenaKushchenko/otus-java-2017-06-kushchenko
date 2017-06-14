@@ -4,31 +4,53 @@ package ru.otus;
  * Created by Elena on 14.06.2017.
  */
 
+import java.util.Arrays;
+
 /**
- * VM options -Xmx512m -Xms512m
+ * VM options -Xmx512m -Xms512m -XX:-UseTLAB
  */
 public class Main {
+    private static final Runtime runtime = Runtime.getRuntime ();
 
     public static void main(String... args) throws InterruptedException {
         final Factory factory = new Factory();
 
-        calc(factory, "String");
-        calc(factory, "Object");
+        for (Integer count : Arrays.asList(10_000, 100, 1, 0)) {
+            System.out.println("===" + count + "===");
+            calculateMemory(factory, Type.STRING, count);
+            calculateMemory(factory, Type.OBJECT, count);
+            calculateMemory(factory, Type.BOOLEAN, count);
+            calculateMemory(factory, Type.INT, count);
+            calculateMemory(factory, Type.DOUBLE, count);
+            calculateMemory(factory, Type.EMPTY_ARRAY, count);
+            System.out.println();
+        }
     }
 
-    private static void calc(Factory factory, String type) throws InterruptedException {
-        Runtime runtime = Runtime.getRuntime();
+    private static void calculateMemory(Factory factory, Type type, int count) throws InterruptedException {
+        runGC();
 
-        System.gc();
-        Thread.sleep(1000);
+        long memory = getUsedMemory();
 
-        long mem = runtime.totalMemory() - runtime.freeMemory();
-
-        System.out.println("=== " + type + "Array[10000] ===");
-        Object[] array = new Object[10000];
-        for (int i = 0; i < 10000; i++) {
+        Object[] array = new Object[count];
+        for (int i = 0; i < count; i++) {
             array[i] = factory.create(type);
         }
-        System.out.println(runtime.totalMemory() - runtime.freeMemory() - mem);
+
+        System.out.print(type + " : ");
+        if (count != 0) {
+            System.out.println((getUsedMemory() - memory) / count);
+        } else {
+            System.out.println(getUsedMemory() - memory);
+        }
+    }
+
+    private static void runGC() throws InterruptedException {
+        System.gc();
+        Thread.sleep(1000);
+    }
+
+    private static long getUsedMemory() {
+        return runtime.totalMemory() - runtime.freeMemory();
     }
 }

@@ -9,15 +9,19 @@ import java.util.function.Supplier;
  */
 
 public class Factory {
-    private final static Map<String, Supplier<Object>> map = new HashMap<>();
+    private final static Map<Type, Supplier<Object>> map = new HashMap<>();
 
     static {
-        map.put("OBJECT", Object::new);
-        map.put("STRING", String::new);
+        map.put(Type.OBJECT, Object::new);
+        map.put(Type.STRING, String::new);
+        map.put(Type.BOOLEAN, () -> false);
+        map.put(Type.INT, () -> Integer.MIN_VALUE);
+        map.put(Type.DOUBLE, () -> Double.MIN_VALUE);
+        map.put(Type.EMPTY_ARRAY, () -> new int[0]);
     }
 
-    public Object create(String type){
-        Supplier<Object> supplier = map.get(type.toUpperCase());
+    public Object create(Type type){
+        Supplier<Object> supplier =  map.get(type);
         if (supplier != null) {
             return supplier.get();
         }
