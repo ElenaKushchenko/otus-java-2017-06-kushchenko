@@ -10,7 +10,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        List<String> emptyList = ImmutableList.of("Hello World", "Hallo Welt", "Bonjour tout le monde");
-        emptyList.forEach(System.out::println);
+        List<String> greetingList = ImmutableList.of("Hello World", "Hallo Welt", "Bonjour tout le monde");
+        greetingList.forEach(System.out::println);
     }
 }
