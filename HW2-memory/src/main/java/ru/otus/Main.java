@@ -15,7 +15,7 @@ public class Main {
     public static void main(String... args) throws InterruptedException {
         final Factory factory = new Factory();
 
-        for (Integer count : Arrays.asList(10_000, 100, 1, 0)) {
+        for (Integer count : Arrays.asList(10_000, 100, 1)) {
             System.out.println("===" + count + "===");
             calculateMemory(factory, Type.STRING, count);
             calculateMemory(factory, Type.OBJECT, count);
@@ -28,21 +28,17 @@ public class Main {
     }
 
     private static void calculateMemory(Factory factory, Type type, int count) throws InterruptedException {
-        runGC();
+        Object[] array = new Object[count];
 
+        runGC();
         long memory = getUsedMemory();
 
-        Object[] array = new Object[count];
         for (int i = 0; i < count; i++) {
             array[i] = factory.create(type);
         }
 
-        System.out.print(type + " : ");
-        if (count != 0) {
-            System.out.println((getUsedMemory() - memory) / count);
-        } else {
-            System.out.println(getUsedMemory() - memory);
-        }
+        runGC();
+        System.out.println(type + " : " + (getUsedMemory() - memory) / count);
     }
 
     private static void runGC() throws InterruptedException {

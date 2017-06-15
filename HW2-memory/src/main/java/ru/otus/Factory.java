@@ -13,7 +13,7 @@ public class Factory {
 
     static {
         map.put(Type.OBJECT, Object::new);
-        map.put(Type.STRING, String::new);
+        map.put(Type.STRING, () -> new String(new char[0]));
         map.put(Type.BOOLEAN, () -> false);
         map.put(Type.INT, () -> Integer.MIN_VALUE);
         map.put(Type.DOUBLE, () -> Double.MIN_VALUE);
