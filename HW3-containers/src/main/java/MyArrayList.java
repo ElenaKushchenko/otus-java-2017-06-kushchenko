@@ -1,9 +1,11 @@
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import java.util.*;
 
 /**
  * Created by Elena on 18.06.2017.
  */
-public final class MyArrayList<E> extends AbstractList<E> implements List<E> {
+public final class MyArrayList<E> extends AbstractList<E> {
     private static final int DEFAULT_CAPACITY = 16;
     private static final int MAX_CAPACITY = Integer.MAX_VALUE;
     private Object[] elements;
@@ -39,31 +41,49 @@ public final class MyArrayList<E> extends AbstractList<E> implements List<E> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int size() {
         return this.size;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEmpty() {
         return this.size == 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean contains(Object o) {
-        return indexOf(o) >= 0;
+        return indexOf(o) > -1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Iterator<E> iterator() {
         return new MyListIterator<>();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object[] toArray() {
         return Arrays.copyOf(elements, size);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T[] toArray(T[] a) {
         if (a.length < this.size)
@@ -71,9 +91,13 @@ public final class MyArrayList<E> extends AbstractList<E> implements List<E> {
         System.arraycopy(this.elements, 0, a, 0, this.size);
         if (a.length > this.size)
             a[size] = null;
+
         return a;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean add(E e) {
         this.ensureCapacity(size + 1);
@@ -81,6 +105,9 @@ public final class MyArrayList<E> extends AbstractList<E> implements List<E> {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean remove(Object o) {
         for (int i = 0; i < this.size; i++) {
@@ -92,6 +119,9 @@ public final class MyArrayList<E> extends AbstractList<E> implements List<E> {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean containsAll(Collection<?> c) {
         for (Object object : c) {
@@ -101,6 +131,9 @@ public final class MyArrayList<E> extends AbstractList<E> implements List<E> {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean addAll(Collection<? extends E> c) {
         this.ensureCapacity(size + c.size());
@@ -110,13 +143,15 @@ public final class MyArrayList<E> extends AbstractList<E> implements List<E> {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
         this.checkIndexValid(index);
 
         this.ensureCapacity(size + c.size());
         System.arraycopy(this.elements, index, this.elements, index + c.size(), size - index);
-
         int i = 0;
         for (E element : c) {
             this.elements[index + i] = element;
@@ -126,6 +161,9 @@ public final class MyArrayList<E> extends AbstractList<E> implements List<E> {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean removeAll(Collection<?> c) {
         for (Object element : c) {
@@ -134,25 +172,35 @@ public final class MyArrayList<E> extends AbstractList<E> implements List<E> {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void sort(Comparator<? super E> c) {
         Arrays.sort((E[]) this.elements, 0, this.size, c);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clear() {
-        for (int i = 0; i < this.size; i++) {
-            this.elements[i] = null;
-        }
         this.size = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public E get(int index) {
         checkIndexExists(index);
+
         return (E) this.elements[index];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public E set(int index, E element) {
         checkIndexExists(index);
@@ -163,56 +211,72 @@ public final class MyArrayList<E> extends AbstractList<E> implements List<E> {
         return replaced;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void add(int index, E element) {
         this.checkIndexValid(index);
 
-        this.ensureCapacity(size + 1);
-        System.arraycopy(this.elements, index, this.elements, index + 1, size - index);
+        this.ensureCapacity(this.size + 1);
+        System.arraycopy(this.elements, index, this.elements, index + 1, this.size - index);
         this.elements[index] = element;
-
-        size++;
+        this.size++;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public E remove(int index) {
         checkIndexExists(index);
 
         E removed = this.get(index);
-
-        int tail = size - index - 1;
+        int tail = this.size - index - 1;
         if (tail > 0)
             System.arraycopy(this.elements, index + 1, this.elements, index, tail);
-        this.elements[--size] = null;
+        this.size--;
 
         return removed;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int indexOf(Object o) {
         for (int i = 0; i < this.size; i++) {
-            if (Objects.equals(o, elements[i])) {
+            if (Objects.equals(o, this.elements[i])) {
                 return i;
             }
         }
         return -1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int lastIndexOf(Object o) {
         for (int i = this.size - 1; i >= 0; i--) {
-            if (Objects.equals(o, elements[i])) {
+            if (Objects.equals(o, this.elements[i])) {
                 return i;
             }
         }
         return -1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ListIterator<E> listIterator() {
         return new MyListIterator<>();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ListIterator<E> listIterator(int index) {
         this.checkIndexExists(index);
@@ -220,27 +284,29 @@ public final class MyArrayList<E> extends AbstractList<E> implements List<E> {
     }
 
     private void grow(int minCapacity) {
-        long newCapacity = Math.max(minCapacity, ((elements.length * 3L) / 2 + 1));
+        long newCapacity = Math.max(minCapacity, ((this.elements.length * 3L) / 2 + 1));
         if (newCapacity > MAX_CAPACITY) {
             newCapacity = MAX_CAPACITY;
         }
 
         Object[] copy = new Object[(int) newCapacity];
-        System.arraycopy(this.elements, 0, copy, 0, size);
+        System.arraycopy(this.elements, 0, copy, 0, this.size);
+
         this.elements = copy;
     }
 
     private void checkIndexExists(int index) {
-        if (0 > index || index >= this.size) {
+        if (index < 0 || index >= this.size) {
             throw new IndexOutOfBoundsException("Index: " + index);
         }
     }
 
     private void checkIndexValid(int index) {
-        if (0 > index) {
+        if (index < 0) {
             throw new IndexOutOfBoundsException("Index: " + index);
         }
     }
+
 
     private class MyListIterator<T> implements ListIterator<T> {
         private int current;
@@ -249,62 +315,98 @@ public final class MyArrayList<E> extends AbstractList<E> implements List<E> {
 
         MyListIterator() {
             super();
-            current = 0;
+            this.current = 0;
         }
 
         MyListIterator(int index) {
             super();
-            current = index;
+            this.current = index;
+            if (index > 0) {
+                this.previous = index - 1;
+            }
         }
 
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean hasNext() {
-            return current < size() - 1;
+            return this.current < (size() - 1);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public T next() {
             T next = null;
 
-            this.previous = this.current;
             if (this.hasNext()){
+                this.previous = this.current;
                 next = (T) elements[this.current++];
             }
 
             return next;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean hasPrevious() {
-            return false;
+            throw new NotImplementedException();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public T previous() {
-            return null;
+            throw new NotImplementedException();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int nextIndex() {
-            return 0;
+            throw new NotImplementedException();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int previousIndex() {
-            return 0;
+            throw new NotImplementedException();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void remove() {
+            throw new NotImplementedException();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void set(T e) {
+            if (this.previous < 0) {
+                throw new IllegalStateException();
+            }
+            MyArrayList.this.set(this.previous, (E) e);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void add(T e) {
+            throw new NotImplementedException();
         }
     }
 }
