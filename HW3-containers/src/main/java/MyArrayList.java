@@ -1,14 +1,9 @@
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
 
 /**
  * Created by Elena on 18.06.2017.
  */
-public final class MyArrayList<E> implements List<E> {
+public final class MyArrayList<E> extends AbstractList<E> implements List<E> {
     private static final int DEFAULT_CAPACITY = 16;
     private static final int MAX_CAPACITY = Integer.MAX_VALUE;
     private Object[] elements;
@@ -61,12 +56,7 @@ public final class MyArrayList<E> implements List<E> {
 
     @Override
     public Iterator<E> iterator() {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public void forEach(Consumer<? super E> action) {
-        throw new NotImplementedException();
+        return new MyListIterator<>();
     }
 
     @Override
@@ -76,12 +66,17 @@ public final class MyArrayList<E> implements List<E> {
 
     @Override
     public <T> T[] toArray(T[] a) {
-        throw new NotImplementedException();
+        if (a.length < this.size)
+            return (T[]) Arrays.copyOf(this.elements, this.size, a.getClass());
+        System.arraycopy(this.elements, 0, a, 0, this.size);
+        if (a.length > this.size)
+            a[size] = null;
+        return a;
     }
 
     @Override
     public boolean add(E e) {
-        this.growIfNeeded(size + 1);
+        this.ensureCapacity(size + 1);
         this.elements[size++] = e;
         return true;
     }
@@ -99,68 +94,98 @@ public final class MyArrayList<E> implements List<E> {
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        throw new NotImplementedException();
+        for (Object object : c) {
+            if (!contains(object))
+                return false;
+        }
+        return true;
     }
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        throw new NotImplementedException();
+        this.ensureCapacity(size + c.size());
+        for (E element : c) {
+            this.elements[size++] = element;
+        }
+        return true;
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
-        throw new NotImplementedException();
+        this.checkIndexValid(index);
+
+        this.ensureCapacity(size + c.size());
+        System.arraycopy(this.elements, index, this.elements, index + c.size(), size - index);
+
+        int i = 0;
+        for (E element : c) {
+            this.elements[index + i] = element;
+            i++;
+        }
+
+        return true;
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public boolean removeIf(Predicate<? super E> filter) {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public boolean retainAll(Collection<?> c) {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public void replaceAll(UnaryOperator<E> operator) {
-        throw new NotImplementedException();
+        for (Object element : c) {
+            this.remove(element);
+        }
+        return true;
     }
 
     @Override
     public void sort(Comparator<? super E> c) {
-        throw new NotImplementedException();
+        Arrays.sort((E[]) this.elements, 0, this.size, c);
     }
 
     @Override
     public void clear() {
-        throw new NotImplementedException();
+        for (int i = 0; i < this.size; i++) {
+            this.elements[i] = null;
+        }
+        this.size = 0;
     }
 
     @Override
     public E get(int index) {
-        checkIndex(index);
+        checkIndexExists(index);
         return (E) this.elements[index];
     }
 
     @Override
     public E set(int index, E element) {
-        throw new NotImplementedException();
+        checkIndexExists(index);
+
+        E replaced = this.get(index);
+        this.elements[index] = element;
+
+        return replaced;
     }
 
     @Override
     public void add(int index, E element) {
-        throw new NotImplementedException();
+        this.checkIndexValid(index);
+
+        this.ensureCapacity(size + 1);
+        System.arraycopy(this.elements, index, this.elements, index + 1, size - index);
+        this.elements[index] = element;
+
+        size++;
     }
 
     @Override
     public E remove(int index) {
-        throw new NotImplementedException();
+        checkIndexExists(index);
+
+        E removed = this.get(index);
+
+        int tail = size - index - 1;
+        if (tail > 0)
+            System.arraycopy(this.elements, index + 1, this.elements, index, tail);
+        this.elements[--size] = null;
+
+        return removed;
     }
 
     @Override
@@ -185,34 +210,101 @@ public final class MyArrayList<E> implements List<E> {
 
     @Override
     public ListIterator<E> listIterator() {
-        throw new NotImplementedException();
+        return new MyListIterator<>();
     }
 
     @Override
     public ListIterator<E> listIterator(int index) {
-        throw new NotImplementedException();
+        this.checkIndexExists(index);
+        return new MyListIterator<>(index);
     }
 
-    @Override
-    public List<E> subList(int fromIndex, int toIndex) {
-        throw new NotImplementedException();
-    }
-
-    private void growIfNeeded(int minCapacity) {
-        if (elements.length < minCapacity) {
-            this.grow(Math.max(minCapacity, (elements.length * 3) / 2 + 1));
+    private void grow(int minCapacity) {
+        long newCapacity = Math.max(minCapacity, ((elements.length * 3L) / 2 + 1));
+        if (newCapacity > MAX_CAPACITY) {
+            newCapacity = MAX_CAPACITY;
         }
-    }
 
-    private void grow(int capacity) {
-        Object[] copy = new Object[capacity];
+        Object[] copy = new Object[(int) newCapacity];
         System.arraycopy(this.elements, 0, copy, 0, size);
         this.elements = copy;
     }
 
-    private void checkIndex(int index) {
-        if (index < 0 || index >= this.size) {
+    private void checkIndexExists(int index) {
+        if (0 > index || index >= this.size) {
             throw new IndexOutOfBoundsException("Index: " + index);
+        }
+    }
+
+    private void checkIndexValid(int index) {
+        if (0 > index) {
+            throw new IndexOutOfBoundsException("Index: " + index);
+        }
+    }
+
+    private class MyListIterator<T> implements ListIterator<T> {
+        private int current;
+        private int previous = -1;
+
+
+        MyListIterator() {
+            super();
+            current = 0;
+        }
+
+        MyListIterator(int index) {
+            super();
+            current = index;
+        }
+
+
+        @Override
+        public boolean hasNext() {
+            return current < size() - 1;
+        }
+
+        @Override
+        public T next() {
+            T next = null;
+
+            this.previous = this.current;
+            if (this.hasNext()){
+                next = (T) elements[this.current++];
+            }
+
+            return next;
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return false;
+        }
+
+        @Override
+        public T previous() {
+            return null;
+        }
+
+        @Override
+        public int nextIndex() {
+            return 0;
+        }
+
+        @Override
+        public int previousIndex() {
+            return 0;
+        }
+
+        @Override
+        public void remove() {
+        }
+
+        @Override
+        public void set(T e) {
+        }
+
+        @Override
+        public void add(T e) {
         }
     }
 }
