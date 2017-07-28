@@ -1,20 +1,26 @@
 package ru.otus.atm.model;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
+/**
+ * Купюра.
+ */
 @Getter
 @AllArgsConstructor
 @RequiredArgsConstructor
 @EqualsAndHashCode
+@ToString
 public class Banknote {
 
+    /**
+     * Номинал купюры.
+     */
     @NonNull
     private final Nominal nominal;
 
-    private final String serialNumber;
+    /**
+     * Серийный номер купюры.
+     */
+    private String serialNumber;
 
 }

@@ -3,11 +3,18 @@ package ru.otus.atm.model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.ToString;
 
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
+/**
+ * Номинал банкноты.
+ */
 @Getter
 @AllArgsConstructor
+@ToString
 public enum Nominal {
     ONE(1),
     FIVE(5),
@@ -19,17 +26,23 @@ public enum Nominal {
     FIVE_THOUSAND(5000);
 
     /**
-     * Номинал в целочисленном представлении
+     * Целочисленное значение номинала.
      */
-    @NonNull
-    private final Integer intValue;
+    private final int value;
 
-
-    public static Nominal resolveByIntValue(Integer value) {
-        return Stream.of(values())
-                .filter(e -> e.intValue.equals(value))
-                .findFirst()
-                .orElse(null);
+    /**
+     * Получить номинал по численному значению.
+     *
+     * @param nominal целочисленное значение номинала
+     * @return номинал или null, если соответствующего
+     */
+    public static Optional<Nominal> valueOf(int nominal) {
+        return Optional.ofNullable(
+                Stream.of(values())
+                        .filter(e -> Objects.equals(e.value, nominal))
+                        .findFirst()
+                        .orElse(null)
+        );
     }
 
 }
