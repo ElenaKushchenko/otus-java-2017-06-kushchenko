@@ -11,7 +11,7 @@ import java.util.List;
 public interface WithdrawStrategy {
 
     /**
-     * Снять денежные средства.
+     * Выдать денежные средства.
      *
      * @param sum запрошенная сумма
      * @param cells ячейки банкомата, с которого производится выдача

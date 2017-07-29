@@ -6,7 +6,6 @@ import ru.otus.atm.service.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -22,6 +21,7 @@ public class EncashmentService implements Service {
         if (currentSize > initialSize) {
             cell.withdraw(currentSize - initialSize);
         }
+
         if (currentSize < initialSize) {
             List<Banknote> banknotes = Stream.generate(() -> new Banknote(cell.getNominal()))
                     .limit(initialSize - currentSize)

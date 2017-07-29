@@ -6,7 +6,9 @@ import ru.otus.atm.machine.Cell;
 import java.util.Comparator;
 import java.util.List;
 
-
+/**
+ * Выдать с разменом.
+ */
 public class SmallFirstWithdrawStrategy extends AbstractWithdrawStrategy {
 
     @Override

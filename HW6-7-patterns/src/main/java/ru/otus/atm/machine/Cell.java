@@ -18,7 +18,7 @@ public interface Cell {
     Nominal getNominal();
 
     /**
-     * @return первоначальное количество купюр в ячейке
+     * @return изначальное количество купюр в ячейке
      */
     int getInitialSize();
 
