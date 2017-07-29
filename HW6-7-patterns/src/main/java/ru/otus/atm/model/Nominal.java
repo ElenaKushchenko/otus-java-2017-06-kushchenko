@@ -2,7 +2,6 @@ package ru.otus.atm.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.ToString;
 
 import java.util.Objects;
@@ -16,11 +15,10 @@ import java.util.stream.Stream;
 @AllArgsConstructor
 @ToString
 public enum Nominal {
-    ONE(1),
-    FIVE(5),
+
     TEN(10),
     FIFTY(50),
-    HUNDRED(100),
+    ONE_HUNDRED(100),
     FIVE_HUNDRED(500),
     ONE_THOUSAND(1000),
     FIVE_THOUSAND(5000);

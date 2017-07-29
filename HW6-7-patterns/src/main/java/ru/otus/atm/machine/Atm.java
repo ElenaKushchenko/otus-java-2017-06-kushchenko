@@ -1,17 +1,17 @@
 package ru.otus.atm.machine;
 
 import ru.otus.atm.model.Banknote;
+import ru.otus.atm.service.Service;
+import ru.otus.atm.strategy.WithdrawStrategy;
 
 import java.util.List;
 
 /**
- * Интерфейс банкомата.
+ * Банкомат.
  */
 public interface Atm {
 
     /**
-     * Получить текущую сумму денежных средств в банкомате.
-     *
      * @return текущая сумма денежных средств в банкомате
      */
     int getBalance();
@@ -22,14 +22,21 @@ public interface Atm {
      * @param banknotes купюры
      * @return купюры, не прошедшие проверку
      */
-    List<Banknote> putCash(List<Banknote> banknotes);
+    List<Banknote> depositCash(List<Banknote> banknotes);
 
     /**
      * Снять денежные средства.
      *
-     * @param sum сумма
+     * @param sum запрошенная сумма
+     * @param strategy стратегия выдачи
      * @return денежные средства в указанном объеме
      */
-    List<Banknote> takeCash(int sum);
+    List<Banknote> withdrawCash(int sum, WithdrawStrategy strategy);
 
+    /**
+     * Произвести сервисное обслуживание.
+     *
+     * @param service сервис
+     */
+    void doService(Service service);
 }
