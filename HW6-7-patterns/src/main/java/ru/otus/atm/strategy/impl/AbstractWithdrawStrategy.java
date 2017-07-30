@@ -4,22 +4,22 @@ import ru.otus.atm.machine.Cell;
 import ru.otus.atm.model.Banknote;
 import ru.otus.atm.strategy.WithdrawStrategy;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 public abstract class AbstractWithdrawStrategy implements WithdrawStrategy {
 
     public List<Banknote> withdraw(int sum, List<Cell> cells) {
-        sort(cells);
+        List<Cell> sortedCells = cells.stream()
+                .sorted(getComparator())
+                .collect(Collectors.toList());
 
         int remainder = sum;                                                    //сумма, которую осталось выдать
         final Map<Cell, Integer> resultActions = new HashMap<>();               //<Ячейка, Число купюр>
 
-        for (int i = 0; (i < cells.size() && remainder > 0); i++) {             //проход по ячейкам пока не выдана полная сумма
-            final Cell cell = cells.get(i);
+        for (int i = 0; (i < sortedCells.size() && remainder > 0); i++) {             //проход по ячейкам пока не выдана полная сумма
+            final Cell cell = sortedCells.get(i);
 
             final int banknoteCount = remainder / cell.getNominal().getValue();
             if (cell.getSize() - banknoteCount >= 0) {                          //в ячейке достаточно купюр
@@ -41,6 +41,6 @@ public abstract class AbstractWithdrawStrategy implements WithdrawStrategy {
         return result;
     }
 
-    protected abstract void sort(List<Cell> cells);
+    protected abstract Comparator<Cell> getComparator();
 
 }

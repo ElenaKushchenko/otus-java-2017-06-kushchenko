@@ -4,7 +4,6 @@ package ru.otus.atm.strategy.impl;
 import ru.otus.atm.machine.Cell;
 
 import java.util.Comparator;
-import java.util.List;
 
 /**
  * Выдать с разменом.
@@ -12,8 +11,8 @@ import java.util.List;
 public class SmallFirstWithdrawStrategy extends AbstractWithdrawStrategy {
 
     @Override
-    protected void sort(List<Cell> cells) {
-        cells.sort(Comparator.comparingInt((Cell cell) -> cell.getNominal().getValue()));
+    protected Comparator<Cell> getComparator() {
+        return Comparator.comparingInt((Cell cell) -> cell.getNominal().getValue());
     }
 
 }
