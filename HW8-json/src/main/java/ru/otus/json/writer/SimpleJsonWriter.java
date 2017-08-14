@@ -9,8 +9,9 @@ import java.util.stream.Collectors;
 /**
  * Created by Elena on 04.08.2017.
  */
-public class JsonWriterImpl {
+public class SimpleJsonWriter implements JsonWriter {
     private static final Set<Class<?>> WRAPPER_TYPES;
+
 
     static {
         WRAPPER_TYPES = new HashSet<>();
@@ -25,6 +26,7 @@ public class JsonWriterImpl {
         WRAPPER_TYPES.add(Double.class);
     }
 
+
     private boolean isWrapperType(Class<?> clazz) {
         return WRAPPER_TYPES.contains(clazz);
     }
@@ -35,11 +37,13 @@ public class JsonWriterImpl {
         if (clazz.equals(String.class)) {
             return String.format("\"%s\"", object);
         }
+
         if (object.getClass().isPrimitive()
                 || isWrapperType(object.getClass())
                 || object.getClass().isEnum()) {
             return object.toString();
         }
+
         if (object.getClass().isArray()) {
             List<String> strings = new ArrayList<>();
             int length = Array.getLength(object);
@@ -51,6 +55,7 @@ public class JsonWriterImpl {
 
             return String.format("[%s]", String.join(",", strings));
         }
+
         if (object instanceof Collection) {
             List<String> strings = new ArrayList<>();
 

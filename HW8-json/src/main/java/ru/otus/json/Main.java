@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import ru.otus.json.example.ExtendedTestObject;
 import ru.otus.json.example.SimpleTestObject;
-import ru.otus.json.writer.JsonWriterImpl;
+import ru.otus.json.writer.SimpleJsonWriter;
 
 import java.util.Arrays;
 
@@ -22,7 +22,7 @@ public class Main {
                 .create();
         System.out.println(gson.toJson(testObject));
 
-        JsonWriterImpl writer = new JsonWriterImpl();
+        SimpleJsonWriter writer = new SimpleJsonWriter();
         System.out.println(writer.toJson(testObject));
     }
 }
