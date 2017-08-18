@@ -7,10 +7,10 @@ import ru.otus.json.example.SimpleTestObject;
 import ru.otus.json.writer.SimpleJsonWriter;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Created by Elena on 03.08.2017.
- */
+
 public class Main {
 
     public static void main(String... args) throws IllegalAccessException, ClassNotFoundException {
@@ -18,11 +18,14 @@ public class Main {
                 Arrays.asList("str1", "str2", "str3"));
         testObject.testMethod();
 
+        Map<Integer, SimpleTestObject> map = new HashMap<>();
+        map.put(123, testObject);
+
         Gson gson = new GsonBuilder()
                 .create();
-        System.out.println(gson.toJson(testObject));
+        System.out.println(gson.toJson(map));
 
         SimpleJsonWriter writer = new SimpleJsonWriter();
-        System.out.println(writer.toJson(testObject));
+        System.out.println(writer.toJson(map));
     }
 }

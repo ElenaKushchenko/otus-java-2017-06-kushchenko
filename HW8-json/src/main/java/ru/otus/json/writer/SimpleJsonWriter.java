@@ -6,67 +6,92 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Created by Elena on 04.08.2017.
- */
+import static ru.otus.json.writer.TypeResolver.isWrapperType;
+
+
 public class SimpleJsonWriter implements JsonWriter {
-    private static final Set<Class<?>> WRAPPER_TYPES;
-
-
-    static {
-        WRAPPER_TYPES = new HashSet<>();
-
-        WRAPPER_TYPES.add(Boolean.class);
-        WRAPPER_TYPES.add(Character.class);
-        WRAPPER_TYPES.add(Byte.class);
-        WRAPPER_TYPES.add(Short.class);
-        WRAPPER_TYPES.add(Integer.class);
-        WRAPPER_TYPES.add(Long.class);
-        WRAPPER_TYPES.add(Float.class);
-        WRAPPER_TYPES.add(Double.class);
-    }
-
-
-    private boolean isWrapperType(Class<?> clazz) {
-        return WRAPPER_TYPES.contains(clazz);
-    }
 
     public String toJson(Object object) throws IllegalAccessException {
         Class clazz = object.getClass();
 
         if (clazz.equals(String.class)) {
-            return String.format("\"%s\"", object);
+            return toJsonString(object);
         }
 
-        if (object.getClass().isPrimitive()
+        if (clazz.isPrimitive()
                 || isWrapperType(object.getClass())
                 || object.getClass().isEnum()) {
-            return object.toString();
+            return toJsonValue(object);
         }
 
-        if (object.getClass().isArray()) {
-            List<String> strings = new ArrayList<>();
-            int length = Array.getLength(object);
-
-            for (int i = 0; i < length; i++) {
-                Object item = Array.get(object, i);
-                strings.add(toJson(item));
-            }
-
-            return String.format("[%s]", String.join(",", strings));
+        if (clazz.isArray()) {
+            return toJsonArray(object);
         }
 
         if (object instanceof Collection) {
-            List<String> strings = new ArrayList<>();
-
-            for (Object item : ((Collection) object)) {
-                strings.add(toJson(item));
-            }
-
-            return String.format("[%s]", String.join(",", strings));
+            return toJsonCollection(object);
         }
 
+        if (object instanceof Map) {
+            return toJsonMap(object);
+        }
+
+        return toJsonObject(object);
+    }
+
+
+    private String toJsonString(Object object) {
+        return String.format("\"%s\"", object);
+    }
+
+    private String toJsonValue(Object object) {
+        return object.toString();
+    }
+
+    private String toJsonArray(Object object) throws IllegalAccessException {
+        List<String> strings = new ArrayList<>();
+        int length = Array.getLength(object);
+
+        for (int i = 0; i < length; i++) {
+            Object item = Array.get(object, i);
+            strings.add(toJson(item));
+        }
+
+        return String.format("[%s]", String.join(",", strings));
+    }
+
+    private String toJsonCollection(Object object) throws IllegalAccessException {
+        List<String> strings = new ArrayList<>();
+
+        for (Object item : ((Collection) object)) {
+            strings.add(toJson(item));
+        }
+
+        return String.format("[%s]", String.join(",", strings));
+    }
+
+    private String toJsonMap(Object object) throws IllegalAccessException {
+        Map map = (Map) object;
         Map<String, String> stringMap = new LinkedHashMap<>();
+
+        for (Object item : map.keySet()) {
+            String key = item.toString();
+            Object value = map.get(item);
+
+            stringMap.put(key, toJson(value));
+        }
+
+        return String.format("{%s}",
+                stringMap.entrySet().stream()
+                        .map(item -> String.format("\"%s\":%s", item.getKey(), item.getValue()))
+                        .collect(Collectors.joining(","))
+        );
+    }
+
+    private String toJsonObject(Object object) throws IllegalAccessException {
+        Class clazz = object.getClass();
+        Map<String, String> stringMap = new LinkedHashMap<>();
+
         while (!clazz.equals(Object.class)) {
             for (Field field : clazz.getDeclaredFields()) {
                 if (Modifier.isTransient(field.getModifiers())) {
