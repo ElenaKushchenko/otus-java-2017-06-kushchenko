@@ -4,9 +4,9 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
-import java.util.stream.Collectors;
 
-import static ru.otus.json.writer.TypeResolver.isWrapperType;
+import static ru.otus.json.writer.util.JsonFormatter.*;
+import static ru.otus.json.writer.util.TypeResolver.*;
 
 
 public class SimpleJsonWriter implements JsonWriter {
@@ -14,13 +14,11 @@ public class SimpleJsonWriter implements JsonWriter {
     public String toJson(Object object) throws IllegalAccessException {
         Class clazz = object.getClass();
 
-        if (clazz.equals(String.class)) {
+        if (clazz.equals(String.class) || clazz.isEnum()) {
             return toJsonString(object);
         }
 
-        if (clazz.isPrimitive()
-                || isWrapperType(object.getClass())
-                || object.getClass().isEnum()) {
+        if (clazz.isPrimitive() || isWrapperType(clazz)) {
             return toJsonValue(object);
         }
 
@@ -41,7 +39,7 @@ public class SimpleJsonWriter implements JsonWriter {
 
 
     private String toJsonString(Object object) {
-        return String.format("\"%s\"", object);
+        return formatString(object);
     }
 
     private String toJsonValue(Object object) {
@@ -49,30 +47,30 @@ public class SimpleJsonWriter implements JsonWriter {
     }
 
     private String toJsonArray(Object object) throws IllegalAccessException {
-        List<String> strings = new ArrayList<>();
+        List<String> stringList = new ArrayList<>();
         int length = Array.getLength(object);
 
         for (int i = 0; i < length; i++) {
             Object item = Array.get(object, i);
-            strings.add(toJson(item));
+            stringList.add(toJson(item));
         }
 
-        return String.format("[%s]", String.join(",", strings));
+        return formatArray(stringList);
     }
 
     private String toJsonCollection(Object object) throws IllegalAccessException {
-        List<String> strings = new ArrayList<>();
+        List<String> stringList = new ArrayList<>();
 
         for (Object item : ((Collection) object)) {
-            strings.add(toJson(item));
+            stringList.add(toJson(item));
         }
 
-        return String.format("[%s]", String.join(",", strings));
+        return formatArray(stringList);
     }
 
     private String toJsonMap(Object object) throws IllegalAccessException {
-        Map map = (Map) object;
         Map<String, String> stringMap = new LinkedHashMap<>();
+        Map map = (Map) object;
 
         for (Object item : map.keySet()) {
             String key = item.toString();
@@ -81,16 +79,12 @@ public class SimpleJsonWriter implements JsonWriter {
             stringMap.put(key, toJson(value));
         }
 
-        return String.format("{%s}",
-                stringMap.entrySet().stream()
-                        .map(item -> String.format("\"%s\":%s", item.getKey(), item.getValue()))
-                        .collect(Collectors.joining(","))
-        );
+        return formatObject(stringMap);
     }
 
     private String toJsonObject(Object object) throws IllegalAccessException {
-        Class clazz = object.getClass();
         Map<String, String> stringMap = new LinkedHashMap<>();
+        Class clazz = object.getClass();
 
         while (!clazz.equals(Object.class)) {
             for (Field field : clazz.getDeclaredFields()) {
@@ -108,10 +102,6 @@ public class SimpleJsonWriter implements JsonWriter {
             clazz = clazz.getSuperclass();
         }
 
-        return String.format("{%s}",
-                stringMap.entrySet().stream()
-                        .map(item -> String.format("\"%s\":%s", item.getKey(), item.getValue()))
-                        .collect(Collectors.joining(","))
-        );
+        return formatObject(stringMap);
     }
 }

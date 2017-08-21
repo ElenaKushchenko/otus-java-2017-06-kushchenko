@@ -1,4 +1,4 @@
-package ru.otus.json.writer;
+package ru.otus.json.writer.util;
 
 import java.util.HashSet;
 import java.util.Set;
