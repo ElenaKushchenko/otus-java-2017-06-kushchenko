@@ -1,11 +1,6 @@
 package ru.otus.json.writer.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
-
-@Getter
-@AllArgsConstructor
 public enum TestEnum {
     FIRST(1, "First"),
     SECOND(2, "Second"),
@@ -13,4 +8,10 @@ public enum TestEnum {
 
     private int intValue;
     private String stringValue;
+
+
+    TestEnum(int intValue, String stringValue) {
+        this.intValue = intValue;
+        this.stringValue = stringValue;
+    }
 }

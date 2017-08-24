@@ -14,7 +14,10 @@ public class SimpleJsonWriter implements JsonWriter {
     public String toJson(Object object) throws IllegalAccessException {
         Class clazz = object.getClass();
 
-        if (clazz.equals(String.class) || clazz.isEnum()) {
+        if (clazz.equals(String.class)
+                || clazz.isEnum()
+                || clazz.equals(Character.class)
+                || clazz.equals(char.class)) {
             return toJsonString(object);
         }
 
