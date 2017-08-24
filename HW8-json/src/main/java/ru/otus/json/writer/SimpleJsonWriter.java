@@ -6,22 +6,25 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 
 import static ru.otus.json.writer.util.JsonFormatter.*;
-import static ru.otus.json.writer.util.TypeResolver.*;
 
 
 public class SimpleJsonWriter implements JsonWriter {
 
-    public String toJson(Object object) throws IllegalAccessException {
+    public String toJson(Object object) {
+        if (object == null) {
+            return null;
+        }
+
         Class clazz = object.getClass();
 
         if (clazz.equals(String.class)
-                || clazz.isEnum()
                 || clazz.equals(Character.class)
-                || clazz.equals(char.class)) {
+                || clazz.isEnum()) {
             return toJsonString(object);
         }
 
-        if (clazz.isPrimitive() || isWrapperType(clazz)) {
+        if (object instanceof Boolean
+                || object instanceof Number) {
             return toJsonValue(object);
         }
 
@@ -49,7 +52,7 @@ public class SimpleJsonWriter implements JsonWriter {
         return object.toString();
     }
 
-    private String toJsonArray(Object object) throws IllegalAccessException {
+    private String toJsonArray(Object object) {
         List<String> stringList = new ArrayList<>();
         int length = Array.getLength(object);
 
@@ -61,7 +64,7 @@ public class SimpleJsonWriter implements JsonWriter {
         return formatArray(stringList);
     }
 
-    private String toJsonCollection(Object object) throws IllegalAccessException {
+    private String toJsonCollection(Object object) {
         List<String> stringList = new ArrayList<>();
 
         for (Object item : ((Collection) object)) {
@@ -71,12 +74,16 @@ public class SimpleJsonWriter implements JsonWriter {
         return formatArray(stringList);
     }
 
-    private String toJsonMap(Object object) throws IllegalAccessException {
+    private String toJsonMap(Object object) {
         Map<String, String> stringMap = new LinkedHashMap<>();
         Map map = (Map) object;
 
         for (Object item : map.keySet()) {
-            String key = item.toString();
+            if (item == null && map.get(item) == null) {
+                continue;
+            }
+
+            String key = String.valueOf(item);
             Object value = map.get(item);
 
             stringMap.put(key, toJson(value));
@@ -85,19 +92,29 @@ public class SimpleJsonWriter implements JsonWriter {
         return formatObject(stringMap);
     }
 
-    private String toJsonObject(Object object) throws IllegalAccessException {
+    private String toJsonObject(Object object) {
         Map<String, String> stringMap = new LinkedHashMap<>();
         Class clazz = object.getClass();
 
         while (!clazz.equals(Object.class)) {
             for (Field field : clazz.getDeclaredFields()) {
                 if (Modifier.isTransient(field.getModifiers())) {
-                    break;
+                    continue;
                 }
                 field.setAccessible(true);
 
                 String key = field.getName();
-                Object value = field.get(object);
+                Object value;
+
+                try {
+                    value = field.get(object);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+
+                if (value == null) {
+                    continue;
+                }
 
                 stringMap.put(key, toJson(value));
             }
