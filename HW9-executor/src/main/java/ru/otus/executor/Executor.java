@@ -6,7 +6,7 @@ import java.math.BigInteger;
 
 public interface Executor {
 
-    <T extends DataSet> void save(T user);
+    <T extends DataSet> void save(T entity);
 
-    <T extends DataSet> T load(BigInteger id, Class<T> clazz);
+    <T extends DataSet> T load(BigInteger id, Class<T> entityClass);
 }
