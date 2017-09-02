@@ -3,7 +3,6 @@ package ru.otus.model;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 
 @Getter
 
@@ -12,6 +11,6 @@ public abstract class DataSet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private BigInteger id;
+    @Column(name = "id", nullable = false)
+    private long id;
 }
