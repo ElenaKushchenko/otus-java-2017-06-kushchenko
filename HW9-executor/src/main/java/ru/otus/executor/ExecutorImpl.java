@@ -20,7 +20,7 @@ public class ExecutorImpl implements Executor {
 
     @Override
     public <T extends DataSet> void save(@NonNull T entity) {
-        Map<String, Field> columnFields = getColumnFields(entity.getClass());
+        LinkedHashMap<String, Field> columnFields = getColumnFields(entity.getClass());
         columnFields.remove("id");
 
         String statementParams = String.format("(%s)",
@@ -38,9 +38,11 @@ public class ExecutorImpl implements Executor {
             PreparedStatement statement = connection.prepareStatement(query);
 
             int i = 1;
-            for (Field field : columnFields.values()) {
+            for (Map.Entry<String, Field> item : columnFields.entrySet()) {
+                Field field = item.getValue();
                 field.setAccessible(true);
                 statement.setObject(i, field.get(entity));
+
                 i++;
             }
 
@@ -53,7 +55,7 @@ public class ExecutorImpl implements Executor {
 
     @Override
     public <T extends DataSet> T load(long id, @NonNull Class<T> entityClass) {
-        Map<String, Field> columnFields = getColumnFields(entityClass);
+        LinkedHashMap<String, Field> columnFields = getColumnFields(entityClass);
 
         String tableName = entityClass.getAnnotation(Table.class).name();
         String query = "select * from \"" + tableName + "\" where id = ?";
@@ -81,8 +83,8 @@ public class ExecutorImpl implements Executor {
         }
     }
 
-    private Map<String, Field> getColumnFields(Class<?> clazz) {
-        Map<String, Field> fields = new LinkedHashMap<>();
+    private LinkedHashMap<String, Field> getColumnFields(Class<?> clazz) {
+        LinkedHashMap<String, Field> fields = new LinkedHashMap<>();
 
         Class<?> c = clazz;
         while (!c.equals(Object.class)) {
