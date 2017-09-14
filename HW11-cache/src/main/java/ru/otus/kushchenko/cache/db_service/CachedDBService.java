@@ -24,7 +24,7 @@ public class CachedDBService implements DBService {
     @Override
     public long save(UserDataSet user) {
         long id = dbService.save(user);
-        cache.put(new CacheElement<>(user.getId(), user));
+        cache.put(new CacheElement<>(id, new UserDataSet(id, user)));
 
         return id;
     }
@@ -33,8 +33,10 @@ public class CachedDBService implements DBService {
     public UserDataSet load(long id) {
         CacheElement<Long, UserDataSet> cachedUser = cache.get(id);
         if (cachedUser != null) {
+            System.out.println("Cache hit: " + id);
             return cachedUser.getValue();
         }
+        System.out.println("Cache miss: " + id);
 
         UserDataSet loadedUser = dbService.load(id);
         if (loadedUser != null) {

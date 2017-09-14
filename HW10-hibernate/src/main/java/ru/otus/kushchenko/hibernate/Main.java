@@ -18,10 +18,10 @@ public class Main {
             PhoneDataSet phone1 = new PhoneDataSet("111");
             PhoneDataSet phone2 = new PhoneDataSet("222");
 
-            UserDataSet user = new UserDataSet("NewName", 20, address, Arrays.asList(phone1, phone2));
-            dbService.save(user);
+            UserDataSet user = new UserDataSet("Username", 40, address, Arrays.asList(phone1, phone2));
+            long id = dbService.save(user);
 
-            System.out.println(dbService.load(1L));
+            System.out.println(dbService.load(id));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -29,7 +29,7 @@ public class HibernateDBService implements DBService {
         configuration.setProperty("hibernate.connection.username", connectionProps.getProperty("username"));
         configuration.setProperty("hibernate.connection.password", connectionProps.getProperty("password"));
 
-        configuration.setProperty("hibernate.show_sql", "true");
+        configuration.setProperty("hibernate.show_sql", "false");
         configuration.setProperty("hibernate.hbm2ddl.auto", "validate");
         configuration.setProperty("hibernate.enable_lazy_load_no_trans", "true");
 
