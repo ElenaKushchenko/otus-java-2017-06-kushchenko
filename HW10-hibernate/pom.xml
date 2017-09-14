@@ -4,14 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ru.otus</groupId>
+    <groupId>ru.otus.kushchenko</groupId>
     <artifactId>hw10-hibernate</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>HW10-hibernate</name>
+    <name>HW10-Hibernate</name>
 
     <properties>
-        <mainClass>ru.otus.Main</mainClass>
+        <mainClass>ru.otus.kushchenko.hibernate.Main</mainClass>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
