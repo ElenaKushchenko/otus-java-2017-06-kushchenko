@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class UserDataSet extends DataSet {
 
     @Column(name = "name")

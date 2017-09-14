@@ -8,7 +8,7 @@
     <artifactId>hw2-memory</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>HW1-Memory</name>
+    <name>HW2-Memory</name>
 
     <properties>
         <jdk.version>1.8</jdk.version>

@@ -1,22 +1,22 @@
 package ru.otus.executor;
 
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import ru.otus.connection.ConnectionManager;
 import ru.otus.model.DataSet;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
 import java.lang.reflect.Field;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@AllArgsConstructor
+
 public class ExecutorImpl implements Executor {
+    private final Connection connection;
 
     @Override
     public <T extends DataSet> void save(@NonNull T entity) {
@@ -34,9 +34,7 @@ public class ExecutorImpl implements Executor {
                 + String.format(" (%s) ", String.join(", ", columnFields.keySet()))
                 + " values " + statementParams;
 
-        try (Connection connection = ConnectionManager.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(query);
-
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             int i = 1;
             for (Field field : columnFields.values()) {
                 field.setAccessible(true);
@@ -45,7 +43,6 @@ public class ExecutorImpl implements Executor {
             }
 
             statement.executeUpdate();
-            statement.close();
         } catch (SQLException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -56,13 +53,10 @@ public class ExecutorImpl implements Executor {
         Map<String, Field> columnFields = getColumnFields(entityClass);
 
         String tableName = entityClass.getAnnotation(Table.class).name();
-        String query = "select * from \"" + tableName + "\" where id = ?";
+        String query = "select * from " + tableName + " where id = " + id;
 
-        try (Connection connection = ConnectionManager.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setLong(1, id);
-
-            ResultSet result = statement.executeQuery();
+        try (Statement statement = connection.createStatement()) {
+            ResultSet result = statement.executeQuery(query);
             result.next();
 
             T entity = entityClass.newInstance();
@@ -71,9 +65,6 @@ public class ExecutorImpl implements Executor {
                 field.setAccessible(true);
                 field.set(entity, result.getObject(item.getKey()));
             }
-
-            result.close();
-            statement.close();
 
             return entity;
         } catch (SQLException | IllegalAccessException | InstantiationException e) {

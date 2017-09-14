@@ -1,4 +1,4 @@
-package ru.otus.connector;
+package ru.otus.connection;
 
 import java.io.IOException;
 import java.sql.Connection;
