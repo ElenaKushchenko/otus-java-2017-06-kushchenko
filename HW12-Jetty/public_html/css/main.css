@@ -1,0 +1,33 @@
+body, html {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    overflow: auto;
+
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 14px;
+    color: #0A0A0A;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    height: 100%;
+}
+
+.statistic {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    min-width: 40%;
+    padding: 20px;
+    background-color: whitesmoke;
+    border-radius: 10px;
+    border: 1px solid silver;
+    box-shadow: 0 0 0 4px white, 0 0 0 6px silver;
+}
