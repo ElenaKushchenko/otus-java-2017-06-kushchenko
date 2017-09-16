@@ -12,7 +12,7 @@ import javax.persistence.*;
 public abstract class DataSet {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
     @SequenceGenerator(name = "sequence", sequenceName = "db_sequence", allocationSize = 1)
     @Column(name = "id")
     protected Long id;

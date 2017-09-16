@@ -1,12 +1,11 @@
 package ru.otus.kushchenko.cache;
 
-import ru.otus.kushchenko.cache.db_service.CachedDBService;
-import ru.otus.kushchenko.cache.db_service.HibernateDBService;
+import ru.otus.kushchenko.cache.persistence.CachedDBService;
+import ru.otus.kushchenko.cache.persistence.HibernateDBService;
 import ru.otus.kushchenko.cache.model.AddressDataSet;
 import ru.otus.kushchenko.cache.model.PhoneDataSet;
 import ru.otus.kushchenko.cache.model.UserDataSet;
-import ru.otus.kushchenko.cache.db_service.DBService;
-import ru.otus.kushchenko.cache.db_service.JdbcDBService;
+import ru.otus.kushchenko.cache.persistence.DBService;
 
 import java.util.Arrays;
 import java.util.List;

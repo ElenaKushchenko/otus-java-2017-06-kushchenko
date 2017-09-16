@@ -1,11 +1,11 @@
 package ru.otus.kushchenko.hibernate;
 
-import ru.otus.kushchenko.hibernate.db_service.DBServiceImpl;
 import ru.otus.kushchenko.hibernate.model.AddressDataSet;
 import ru.otus.kushchenko.hibernate.model.PhoneDataSet;
 import ru.otus.kushchenko.hibernate.model.UserDataSet;
-import ru.otus.kushchenko.hibernate.db_service.DBService;
-import ru.otus.kushchenko.hibernate.db_service.HibernateDBService;
+import ru.otus.kushchenko.hibernate.persistence.DBService;
+import ru.otus.kushchenko.hibernate.persistence.DBServiceImpl;
+import ru.otus.kushchenko.hibernate.persistence.HibernateDBService;
 
 import java.util.Arrays;
 

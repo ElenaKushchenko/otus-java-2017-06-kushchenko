@@ -19,10 +19,4 @@ public class PhoneDataSet extends DataSet {
 
     @Column(name = "number")
     private String number;
-
-
-    public PhoneDataSet(Long id, PhoneDataSet sourcPhone) {
-        this.id = id;
-        this.number = sourcPhone.number;
-    }
 }

@@ -19,10 +19,4 @@ public class AddressDataSet extends DataSet {
 
     @Column(name = "street")
     private String street;
-
-
-    public AddressDataSet(Long id, AddressDataSet sourceAddress) {
-        this.id = id;
-        this.street = sourceAddress.street;
-    }
 }

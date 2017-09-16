@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -33,14 +32,10 @@ public class UserDataSet extends DataSet {
     private List<PhoneDataSet> phones = new ArrayList<>();
 
 
-    public UserDataSet(Long id, UserDataSet sourceUser) {
-        this.id = id;
-        this.name = sourceUser.name;
-        this.age = sourceUser.age;
-        this.address = new AddressDataSet(null, sourceUser.address);
-        this.phones = sourceUser.phones
-                .stream()
-                .map(phone -> new PhoneDataSet(null, phone))
-                .collect(Collectors.toList());
+    public static UserDataSet of(Long id, UserDataSet source) {
+        UserDataSet user = new UserDataSet(source.name, source.age, source.address, source.phones);
+        user.id = id;
+
+        return user;
     }
 }

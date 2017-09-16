@@ -1,4 +1,4 @@
-package ru.otus.kushchenko.jetty.persistence;
+package ru.otus.kushchenko.cache.persistence;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -6,14 +6,12 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-import ru.otus.kushchenko.jetty.persistence.connection.ConnectionHelper;
-import ru.otus.kushchenko.jetty.persistence.dao.HibernateUserDAO;
-import ru.otus.kushchenko.jetty.persistence.dao.UserDAO;
-import ru.otus.kushchenko.jetty.model.AddressDataSet;
-import ru.otus.kushchenko.jetty.model.PhoneDataSet;
-import ru.otus.kushchenko.jetty.model.UserDataSet;
+import ru.otus.kushchenko.cache.persistence.connection.ConnectionHelper;
+import ru.otus.kushchenko.cache.model.UserDataSet;
+import ru.otus.kushchenko.cache.model.AddressDataSet;
+import ru.otus.kushchenko.cache.model.PhoneDataSet;
+import ru.otus.kushchenko.cache.persistence.dao.HibernateUserDAO;
 
-import java.util.List;
 import java.util.Properties;
 import java.util.function.Function;
 
@@ -35,7 +33,7 @@ public class HibernateDBService implements DBService {
     @Override
     public long save(UserDataSet user) {
         return runInSession(session -> {
-            UserDAO dao = new HibernateUserDAO(session);
+            HibernateUserDAO dao = new HibernateUserDAO(session);
             return dao.save(user);
         });
     }
@@ -43,24 +41,8 @@ public class HibernateDBService implements DBService {
     @Override
     public UserDataSet load(long id) {
         return runInSession(session -> {
-            UserDAO dao = new HibernateUserDAO(session);
+            HibernateUserDAO dao = new HibernateUserDAO(session);
             return dao.load(id);
-        });
-    }
-
-    @Override
-    public UserDataSet loadByName(String name) {
-        return runInSession(session -> {
-            UserDAO dao = new HibernateUserDAO(session);
-            return dao.loadByName(name);
-        });
-    }
-
-    @Override
-    public List<UserDataSet> loadAll() {
-        return runInSession(session -> {
-            UserDAO dao = new HibernateUserDAO(session);
-            return dao.loadAll();
         });
     }
 
