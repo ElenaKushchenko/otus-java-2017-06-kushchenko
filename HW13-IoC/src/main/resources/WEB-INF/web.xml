@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
-         version="2.4">
+
+<web-app>
 
     <display-name>HW13-IoC</display-name>
 
@@ -21,7 +19,7 @@
     <!--Filters-->
     <filter>
         <filter-name>adminFilter</filter-name>
-        <filter-class>ru.otus.kushchenko.jetty.servlet.AdminFilter</filter-class>
+        <filter-class>ru.otus.kushchenko.ioc.servlet.AdminFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -40,15 +38,15 @@
     <!--Servlets-->
     <servlet>
         <servlet-name>loginServlet</servlet-name>
-        <servlet-class>ru.otus.kushchenko.jetty.servlet.LoginServlet</servlet-class>
+        <servlet-class>ru.otus.kushchenko.ioc.servlet.LoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>cacheServlet</servlet-name>
-        <servlet-class>ru.otus.kushchenko.jetty.servlet.CacheServlet</servlet-class>
+        <servlet-class>ru.otus.kushchenko.ioc.servlet.CacheServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>userServlet</servlet-name>
-        <servlet-class>ru.otus.kushchenko.jetty.servlet.UserServlet</servlet-class>
+        <servlet-class>ru.otus.kushchenko.ioc.servlet.UserServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
