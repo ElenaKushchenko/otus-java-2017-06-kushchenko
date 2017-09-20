@@ -19,7 +19,7 @@ $(document).ready(
 $(function () {
     $('#changeAccount').click(function () {
         $.ajax({
-            url: '/login',
+            url: '/hw13/login',
             type: 'DELETE',
             success: function (data, status) {
                 window.localStorage.removeItem("user");

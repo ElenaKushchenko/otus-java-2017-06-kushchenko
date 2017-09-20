@@ -13,11 +13,6 @@ public class CachedDBService implements DBService {
     private final CacheEngine<Long, UserDataSet> cache;
 
 
-    public CachedDBService() {
-        this.dbService = new HibernateDBService();
-        cache = new CacheEngineImpl<>(100, 5000, 5000);
-    }
-
     public CachedDBService(DBService dbService) {
         this.dbService = dbService;
         cache = new CacheEngineImpl<>(100, 5000, 5000);

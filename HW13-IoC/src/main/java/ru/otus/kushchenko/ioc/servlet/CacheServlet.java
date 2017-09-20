@@ -12,16 +12,9 @@ import java.io.IOException;
 
 @Configurable
 public class CacheServlet extends HttpServlet {
-    private CachedDBService dbService;
-
 
     @Autowired
-    public CacheServlet(CachedDBService dbService) {
-        this.dbService = dbService;
-    }
-
-    public CacheServlet() {
-    }
+    private CachedDBService dbService;
 
 
     @Override

@@ -69,7 +69,7 @@
     </dependencies>
 
     <build>
-        <finalName>${name}</finalName>
+        <finalName>hw13</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>

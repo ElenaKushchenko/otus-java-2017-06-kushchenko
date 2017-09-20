@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $.ajax({
-        url: '/login',
+        url: '/hw13/login',
         type: 'GET',
         success: function (data, status) {
             window.localStorage.setItem("user", JSON.stringify(data));

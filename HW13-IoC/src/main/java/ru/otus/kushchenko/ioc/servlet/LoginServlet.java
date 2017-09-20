@@ -3,6 +3,7 @@ package ru.otus.kushchenko.ioc.servlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import ru.otus.kushchenko.ioc.model.UserDataSet;
+import ru.otus.kushchenko.ioc.persistence.CachedDBService;
 import ru.otus.kushchenko.ioc.persistence.DBService;
 import ru.otus.kushchenko.ioc.servlet.util.ServletUtil;
 
@@ -15,16 +16,9 @@ import java.util.UUID;
 @Configurable
 public class LoginServlet extends HttpServlet {
     private static final String LOGIN_ATTRIBUTE = "user";
-    private DBService dbService;
-
 
     @Autowired
-    public LoginServlet(DBService dbService) {
-        this.dbService = dbService;
-    }
-
-    public LoginServlet() {
-    }
+    private CachedDBService dbService;
 
 
     @Override

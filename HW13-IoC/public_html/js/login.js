@@ -11,7 +11,7 @@ $(function () {
 
             var form = $(this);
             $.ajax({
-                url: '/login',
+                url: '/hw13/login',
                 type: 'POST',
                 data: form.serialize(),
                 dataType: "json",
