@@ -10,7 +10,7 @@
     </context-param>
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>ru.otus.kushchenko.jetty.AppContext</param-value>
+        <param-value>ru.otus.kushchenko.ioc.AppContext</param-value>
     </context-param>
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
