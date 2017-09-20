@@ -1,0 +1,111 @@
+body, html {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    overflow: auto;
+
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 14px;
+    color: #0A0A0A;
+}
+
+button {
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 14px;
+
+    margin: 6px;
+    padding: 5px 10px;
+    background-color: gray;
+    color: white;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+button:hover, button:focus {
+    box-shadow: 0 0 0 2px white, 0 0 0 4px silver;
+    background-color: dodgerblue;
+}
+
+input {
+    padding: 5px;
+    margin: 6px;
+    border-radius: 4px;
+    border: 1px solid gray;
+    outline: none;
+}
+
+input:hover, input:focus {
+    box-shadow: 0 0 0 2px white, 0 0 0 4px silver;
+}
+
+label {
+    margin: 6px;
+}
+
+form {
+    margin: 0;
+}
+
+a {
+    margin: 20px 0;
+    color: dodgerblue;
+    cursor: pointer;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    height: 100%;
+}
+
+.block {
+    display: flex;
+    flex-direction: column;
+
+    background-color: whitesmoke;
+    border: 1px solid silver;
+    border-radius: 4px;
+
+    min-width: 30%;
+}
+
+.login {
+    padding: 20px;
+}
+
+.monitoring > * {
+    padding: 0 20px;
+}
+
+.parameter {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.parameter:hover {
+    background-color: floralwhite;
+    font-weight: bold;
+}
+
+.section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: floralwhite;
+}
+
+.icon {
+    height: 20px;
+    cursor: pointer;
+}
