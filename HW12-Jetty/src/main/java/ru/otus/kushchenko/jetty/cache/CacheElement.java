@@ -1,42 +1,35 @@
 package ru.otus.kushchenko.jetty.cache;
 
 
-public class CacheElement<K, V> {
-    private final K key;
+class CacheElement<V> {
     private final V value;
     private final long creationTime;
     private long lastAccessTime;
 
 
-    public CacheElement(K key, V value) {
-        this.key = key;
+    CacheElement(V value) {
         this.value = value;
         this.creationTime = getCurrentTime();
         this.lastAccessTime = getCurrentTime();
     }
 
-
-    public K getKey() {
-        return key;
-    }
-
-    public V getValue() {
+    V getValue() {
         return value;
     }
 
-    public long getCreationTime() {
+    long getCreationTime() {
         return creationTime;
     }
 
-    public long getLastAccessTime() {
+    long getLastAccessTime() {
         return lastAccessTime;
     }
 
-    public void setAccessed() {
+    void setAccessed() {
         lastAccessTime = getCurrentTime();
     }
 
-    protected long getCurrentTime() {
+    private long getCurrentTime() {
         return System.currentTimeMillis();
     }
 }

@@ -8,6 +8,8 @@ import javax.persistence.Table;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 
@@ -17,10 +19,4 @@ public class PhoneDataSet extends DataSet {
 
     @Column(name = "number")
     private String number;
-
-
-    public PhoneDataSet(Long id, String number) {
-        this.id = id;
-        this.number = number;
-    }
 }

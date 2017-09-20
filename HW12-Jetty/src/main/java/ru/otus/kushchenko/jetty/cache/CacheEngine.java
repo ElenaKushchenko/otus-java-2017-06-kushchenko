@@ -3,15 +3,15 @@ package ru.otus.kushchenko.jetty.cache;
 
 public interface CacheEngine<K, V> {
 
-    void put(CacheElement<K, V> element);
+    void put(K key, V value);
 
-    CacheElement<K, V> get(K key);
+    V get(K key);
 
     int getHitCount();
 
     int getMissCount();
 
-    CacheInfo getInfo();
-
     void dispose();
+
+    CacheInfo getInfo();
 }

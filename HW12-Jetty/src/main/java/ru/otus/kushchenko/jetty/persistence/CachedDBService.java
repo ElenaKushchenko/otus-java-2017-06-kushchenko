@@ -1,6 +1,5 @@
 package ru.otus.kushchenko.jetty.persistence;
 
-import ru.otus.kushchenko.jetty.cache.CacheElement;
 import ru.otus.kushchenko.jetty.cache.CacheEngine;
 import ru.otus.kushchenko.jetty.cache.CacheEngineImpl;
 import ru.otus.kushchenko.jetty.cache.CacheInfo;
@@ -28,40 +27,40 @@ public class CachedDBService implements DBService {
     @Override
     public long save(UserDataSet user) {
         long id = dbService.save(user);
-        cache.put(new CacheElement<>(id, UserDataSet.of(id, user)));
+        cache.put(id, UserDataSet.of(id, user));
 
         return id;
     }
 
     @Override
-    public UserDataSet load(long id) {
-        CacheElement<Long, UserDataSet> cachedUser = cache.get(id);
+    public UserDataSet get(long id) {
+        UserDataSet cachedUser = cache.get(id);
         if (cachedUser != null) {
-            return cachedUser.getValue();
+            return cachedUser;
         }
 
-        UserDataSet loadedUser = dbService.load(id);
+        UserDataSet loadedUser = dbService.get(id);
         if (loadedUser != null) {
-            cache.put(new CacheElement<>(loadedUser.getId(), loadedUser));
+            cache.put(loadedUser.getId(), loadedUser);
         }
 
         return loadedUser;
     }
 
     @Override
-    public UserDataSet loadByName(String name) {
-        UserDataSet loadedUser = dbService.loadByName(name);
+    public UserDataSet getByName(String name) {
+        UserDataSet loadedUser = dbService.getByName(name);
         if (loadedUser != null) {
-            cache.put(new CacheElement<>(loadedUser.getId(), loadedUser));
+            cache.put(loadedUser.getId(), loadedUser);
         }
 
         return loadedUser;
     }
 
     @Override
-    public List<UserDataSet> loadAll() {
-        List<UserDataSet> userList = dbService.loadAll();
-        userList.forEach(user -> cache.put(new CacheElement<>(user.getId(), user)));    //ToDO
+    public List<UserDataSet> getAll() {
+        List<UserDataSet> userList = dbService.getAll();
+        userList.forEach(user -> cache.put(user.getId(), user));
 
         return userList;
     }
@@ -72,7 +71,7 @@ public class CachedDBService implements DBService {
         cache.dispose();
     }
 
-    public CacheInfo getCacheInfo() {   //FixMe
+    public CacheInfo getCacheInfo() {
         return cache.getInfo();
     }
 }

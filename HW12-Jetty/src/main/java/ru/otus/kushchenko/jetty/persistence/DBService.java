@@ -8,9 +8,9 @@ public interface DBService extends AutoCloseable {
 
     long save(UserDataSet user);
 
-    UserDataSet load(long id);
+    UserDataSet get(long id);
 
-    UserDataSet loadByName(String name);
+    UserDataSet getByName(String name);
 
-    List<UserDataSet> loadAll();
+    List<UserDataSet> getAll();
 }

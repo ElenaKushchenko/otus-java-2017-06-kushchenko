@@ -1,13 +1,17 @@
 package ru.otus.kushchenko.jetty.model;
 
 import lombok.*;
+import ru.otus.kushchenko.jetty.model.enums.Role;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 
@@ -18,7 +22,14 @@ public class UserDataSet extends DataSet {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "age", nullable = false)
+    @Column(name = "role")
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
+
+    @Column(name = "password")
+    private UUID password;
+
+    @Column(name = "age")
     private int age;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -30,16 +41,17 @@ public class UserDataSet extends DataSet {
     private List<PhoneDataSet> phones = new ArrayList<>();
 
 
-    public UserDataSet(Long id, String name, int age, AddressDataSet address, List<PhoneDataSet> phones) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
-        this.address = address;
-        this.phones = phones;
-    }
-
-
     public static UserDataSet of(Long id, UserDataSet source) {
-        return new UserDataSet(id, source.name, source.age, source.address, source.phones);
+        UserDataSet user = new UserDataSet(
+                source.name,
+                source.role,
+                source.password,
+                source.age,
+                source.address,
+                source.phones
+        );
+        user.id = id;
+
+        return user;
     }
 }

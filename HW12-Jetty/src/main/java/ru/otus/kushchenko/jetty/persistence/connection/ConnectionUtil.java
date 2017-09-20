@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.util.Properties;
 
 @SuppressWarnings("Duplicates")
-public class ConnectionHelper {
+public class ConnectionUtil {
     private static final String PROPERTIES_FILE = "db-connection.properties";
     private static Properties properties;
 
 
-    private ConnectionHelper() {
+    private ConnectionUtil() {
     }
 
 
@@ -17,7 +17,7 @@ public class ConnectionHelper {
         if (properties == null) {
             properties = new Properties();
 
-            ClassLoader classLoader = ConnectionHelper.class.getClassLoader();
+            ClassLoader classLoader = ConnectionUtil.class.getClassLoader();
             try {
                 properties.load(classLoader.getResourceAsStream(PROPERTIES_FILE));
             } catch (IOException e) {

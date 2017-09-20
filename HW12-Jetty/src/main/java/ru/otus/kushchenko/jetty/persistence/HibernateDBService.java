@@ -6,7 +6,7 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-import ru.otus.kushchenko.jetty.persistence.connection.ConnectionHelper;
+import ru.otus.kushchenko.jetty.persistence.connection.ConnectionUtil;
 import ru.otus.kushchenko.jetty.persistence.dao.HibernateUserDAO;
 import ru.otus.kushchenko.jetty.persistence.dao.UserDAO;
 import ru.otus.kushchenko.jetty.model.AddressDataSet;
@@ -41,26 +41,26 @@ public class HibernateDBService implements DBService {
     }
 
     @Override
-    public UserDataSet load(long id) {
+    public UserDataSet get(long id) {
         return runInSession(session -> {
             UserDAO dao = new HibernateUserDAO(session);
-            return dao.load(id);
+            return dao.get(id);
         });
     }
 
     @Override
-    public UserDataSet loadByName(String name) {
+    public UserDataSet getByName(String name) {
         return runInSession(session -> {
             UserDAO dao = new HibernateUserDAO(session);
-            return dao.loadByName(name);
+            return dao.getByName(name);
         });
     }
 
     @Override
-    public List<UserDataSet> loadAll() {
+    public List<UserDataSet> getAll() {
         return runInSession(session -> {
             UserDAO dao = new HibernateUserDAO(session);
-            return dao.loadAll();
+            return dao.getAll();
         });
     }
 
@@ -82,7 +82,7 @@ public class HibernateDBService implements DBService {
     private Configuration createConfiguration() {
         Configuration configuration = new Configuration();
 
-        Properties properties = ConnectionHelper.getConnectionProperties();
+        Properties properties = ConnectionUtil.getConnectionProperties();
 
         configuration.setProperty("hibernate.dialect", properties.getProperty("dialect"));
         configuration.setProperty("hibernate.connection.driver_class", properties.getProperty("driverName"));

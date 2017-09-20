@@ -15,11 +15,11 @@ public class CacheEngineImpl<K, V> implements CacheEngine<K, V> {
     private final long lifeTimeMs;
     private final long idleTimeMs;
 
-    private final Map<K, SoftReference<CacheElement<K, V>>> elements = new LinkedHashMap<>();
+    private final Map<K, SoftReference<CacheElement<V>>> elements = new LinkedHashMap<>();
     private final Timer timer = new Timer();
 
-    private int hit;
-    private int miss;
+    private int hit = 0;
+    private int miss = 0;
 
 
     public CacheEngineImpl() {
@@ -40,12 +40,12 @@ public class CacheEngineImpl<K, V> implements CacheEngine<K, V> {
 
 
     @Override
-    public void put(CacheElement<K, V> element) {
+    public void put(K key, V value) {
         if (elements.size() == maxElements) {
             elements.remove(elements.keySet().iterator().next());
         }
 
-        K key = element.getKey();
+        CacheElement<V> element = new CacheElement<>(value);
         elements.put(key, new SoftReference<>(element));
 
         checkLifeTime(key);
@@ -53,16 +53,16 @@ public class CacheEngineImpl<K, V> implements CacheEngine<K, V> {
     }
 
     @Override
-    public CacheElement<K, V> get(K key) {
-        SoftReference<CacheElement<K, V>> elementReference = elements.get(key);
+    public V get(K key) {
+        SoftReference<CacheElement<V>> elementReference = elements.get(key);
 
         if (elementReference != null) {
-            CacheElement<K, V> cacheElement = elementReference.get();
+            CacheElement<V> cacheElement = elementReference.get();
             if (cacheElement != null) {
                 cacheElement.setAccessed();
                 hit++;
 
-                return cacheElement;
+                return cacheElement.getValue();
             }
         }
 
@@ -81,21 +81,21 @@ public class CacheEngineImpl<K, V> implements CacheEngine<K, V> {
     }
 
     @Override
-    public CacheInfo getInfo() {
-        return new CacheInfo(maxElements, lifeTimeMs, idleTimeMs, elements.size(), hit, miss);
-    }
-
-    @Override
     public void dispose() {
         timer.cancel();
     }
 
+    @Override
+    public CacheInfo getInfo() {
+        return new CacheInfo(maxElements, lifeTimeMs, idleTimeMs, elements.size(), hit, miss);
+    }
 
-    private TimerTask getTimerTask(final K key, Function<CacheElement<K, V>, Long> timeFunction) {
+
+    private TimerTask getTimerTask(final K key, Function<CacheElement<V>, Long> timeFunction) {
         return new TimerTask() {
             @Override
             public void run() {
-                SoftReference<CacheElement<K, V>> elementReference = elements.get(key);
+                SoftReference<CacheElement<V>> elementReference = elements.get(key);
                 if (elementReference == null || isT1BeforeT2(timeFunction.apply(elementReference.get()), System.currentTimeMillis())) {
                     elements.remove(key);
                 }

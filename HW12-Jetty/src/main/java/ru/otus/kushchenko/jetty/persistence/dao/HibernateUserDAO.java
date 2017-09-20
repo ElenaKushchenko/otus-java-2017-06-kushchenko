@@ -21,12 +21,12 @@ public class HibernateUserDAO implements UserDAO {
     }
 
     @Override
-    public UserDataSet load(long id) {
-        return session.load(UserDataSet.class, id);
+    public UserDataSet get(long id) {
+        return session.get(UserDataSet.class, id);
     }
 
     @Override
-    public UserDataSet loadByName(String name) {
+    public UserDataSet getByName(String name) {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<UserDataSet> criteria = builder.createQuery(UserDataSet.class);
         Root<UserDataSet> from = criteria.from(UserDataSet.class);
@@ -36,7 +36,7 @@ public class HibernateUserDAO implements UserDAO {
     }
 
     @Override
-    public List<UserDataSet> loadAll() {
+    public List<UserDataSet> getAll() {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<UserDataSet> criteria = builder.createQuery(UserDataSet.class);
         criteria.from(UserDataSet.class);
