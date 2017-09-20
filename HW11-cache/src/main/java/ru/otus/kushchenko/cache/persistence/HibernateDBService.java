@@ -39,10 +39,10 @@ public class HibernateDBService implements DBService {
     }
 
     @Override
-    public UserDataSet load(long id) {
+    public UserDataSet get(long id) {
         return runInSession(session -> {
             HibernateUserDAO dao = new HibernateUserDAO(session);
-            return dao.load(id);
+            return dao.get(id);
         });
     }
 

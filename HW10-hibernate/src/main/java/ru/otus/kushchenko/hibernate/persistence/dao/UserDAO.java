@@ -6,5 +6,5 @@ public interface UserDAO {
 
     long save(UserDataSet user);
 
-    UserDataSet load(long id);
+    UserDataSet get(long id);
 }

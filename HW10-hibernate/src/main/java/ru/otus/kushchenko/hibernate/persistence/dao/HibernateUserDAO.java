@@ -16,7 +16,7 @@ public class HibernateUserDAO implements UserDAO {
     }
 
     @Override
-    public UserDataSet load(long id) {
-        return session.load(UserDataSet.class, id);
+    public UserDataSet get(long id) {
+        return session.get(UserDataSet.class, id);
     }
 }

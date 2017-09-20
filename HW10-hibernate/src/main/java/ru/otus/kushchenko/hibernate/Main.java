@@ -21,7 +21,7 @@ public class Main {
             UserDataSet user = new UserDataSet("Username", 40, address, Arrays.asList(phone1, phone2));
             long id = dbService.save(user);
 
-            System.out.println(dbService.load(id));
+            System.out.println(dbService.get(id));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -21,7 +21,7 @@ public class JdbcUserDAO implements UserDAO {
     }
 
     @Override
-    public UserDataSet load(long id) {
+    public UserDataSet get(long id) {
         return executor.load(id, UserDataSet.class);
     }
 }

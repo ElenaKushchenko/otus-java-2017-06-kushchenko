@@ -32,10 +32,10 @@ public class DBServiceImpl implements DBService {
     }
 
     @Override
-    public UserDataSet load(long id) {
+    public UserDataSet get(long id) {
         return runInTransaction(connection -> {
             JdbcUserDAO dao = new JdbcUserDAO(connection);
-            return dao.load(id);
+            return dao.get(id);
         });
     }
 

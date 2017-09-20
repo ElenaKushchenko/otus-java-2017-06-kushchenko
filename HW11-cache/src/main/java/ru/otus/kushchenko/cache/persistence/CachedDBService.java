@@ -29,7 +29,7 @@ public class CachedDBService implements DBService {
     }
 
     @Override
-    public UserDataSet load(long id) {
+    public UserDataSet get(long id) {
         UserDataSet cachedUser = cache.get(id);
         if (cachedUser != null) {
             System.out.println("Cache hit: " + id);
@@ -37,7 +37,7 @@ public class CachedDBService implements DBService {
         }
         System.out.println("Cache miss: " + id);
 
-        UserDataSet loadedUser = dbService.load(id);
+        UserDataSet loadedUser = dbService.get(id);
         if (loadedUser != null) {
             cache.put(loadedUser.getId(), loadedUser);
         }
