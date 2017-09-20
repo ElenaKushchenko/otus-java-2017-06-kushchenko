@@ -1,3 +1,5 @@
+var base = window.location.pathname.substr(0, window.location.pathname.lastIndexOf("/"));
+
 $(document).ready(
     function () {
         var user = JSON.parse(window.localStorage.getItem("user"));
@@ -19,7 +21,7 @@ $(document).ready(
 $(function () {
     $('#changeAccount').click(function () {
         $.ajax({
-            url: '/hw13/login',
+            url: base + '/login',
             type: 'DELETE',
             success: function (data, status) {
                 window.localStorage.removeItem("user");
@@ -45,7 +47,7 @@ $(function () {
 
             var form = $(this);
             $.ajax({
-                url: '/hw13/user',
+                url: base + '/user',
                 type: 'GET',
                 data: form.serialize(),
                 dataType: "json",
@@ -63,7 +65,7 @@ $(function () {
 
 function loadCacheInfo() {
     $.ajax({
-        url: '/hw13/cache',
+        url: base + '/cache',
         type: 'GET',
         dataType: "json",
         success: function (data, status) {

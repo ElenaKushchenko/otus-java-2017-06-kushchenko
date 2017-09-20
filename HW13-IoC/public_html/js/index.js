@@ -1,6 +1,7 @@
 $(document).ready(function () {
+    var base = window.location.pathname.substr(0, window.location.pathname.lastIndexOf("/"));
     $.ajax({
-        url: '/hw13/login',
+        url: base + '/login',
         type: 'GET',
         success: function (data, status) {
             window.localStorage.setItem("user", JSON.stringify(data));

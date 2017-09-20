@@ -5,13 +5,15 @@ $(document).ready(function () {
 });
 
 $(function () {
+    var base = window.location.pathname.substr(0, window.location.pathname.lastIndexOf("/"));
+
     $('#loginForm')
         .submit(function (event) {
             event.preventDefault();
 
             var form = $(this);
             $.ajax({
-                url: '/hw13/login',
+                url: base + '/login',
                 type: 'POST',
                 data: form.serialize(),
                 dataType: "json",
