@@ -1,5 +1,6 @@
 package ru.otus.kushchenko.ioc.persistence;
 
+import org.springframework.stereotype.Component;
 import ru.otus.kushchenko.ioc.cache.CacheEngine;
 import ru.otus.kushchenko.ioc.cache.CacheEngineImpl;
 import ru.otus.kushchenko.ioc.cache.CacheInfo;

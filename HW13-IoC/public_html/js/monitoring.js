@@ -45,7 +45,7 @@ $(function () {
 
             var form = $(this);
             $.ajax({
-                url: '/user',
+                url: '/hw13/user',
                 type: 'GET',
                 data: form.serialize(),
                 dataType: "json",
@@ -63,7 +63,7 @@ $(function () {
 
 function loadCacheInfo() {
     $.ajax({
-        url: '/cache',
+        url: '/hw13/cache',
         type: 'GET',
         dataType: "json",
         success: function (data, status) {

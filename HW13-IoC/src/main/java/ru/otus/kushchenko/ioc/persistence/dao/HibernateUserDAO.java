@@ -10,7 +10,6 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @AllArgsConstructor
-
 public class HibernateUserDAO implements UserDAO {
     private final Session session;
 
