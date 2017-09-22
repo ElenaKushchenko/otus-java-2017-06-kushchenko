@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class ParallelSorter {
 
@@ -21,6 +22,12 @@ public class ParallelSorter {
             executor.execute(new Thread(() -> Collections.sort(part)));
         }
         executor.shutdown();
+
+        try {
+            executor.awaitTermination(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         return merge(arrayParts);
     }
