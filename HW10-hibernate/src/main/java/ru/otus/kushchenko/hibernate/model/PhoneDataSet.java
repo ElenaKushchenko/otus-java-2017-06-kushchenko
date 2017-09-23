@@ -2,18 +2,31 @@ package ru.otus.kushchenko.hibernate.model;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 
 @Entity
 @Table(name = "phones")
 public class PhoneDataSet extends DataSet {
 
+    @NonNull
     @Column(name = "number")
     private String number;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserDataSet user;
+
+
+    @Override
+    public String toString() {
+        return "PhoneDataSet{" +
+                "number='" + number + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }
