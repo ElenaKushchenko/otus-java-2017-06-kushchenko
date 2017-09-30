@@ -15,7 +15,6 @@ public class MsgGetCacheInfoAnswer extends MsgToFrontend {
 
     @Override
     public void exec(AddressedFrontendService frontendService) {
-        System.out.println("Get cache info");
-//        frontendService.sendUser(id, name);
+        frontendService.putAnswer(cacheInfo);
     }
 }

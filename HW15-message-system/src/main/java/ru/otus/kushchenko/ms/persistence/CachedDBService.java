@@ -8,6 +8,7 @@ import ru.otus.kushchenko.ms.model.UserDataSet;
 
 import java.util.List;
 
+@Component
 @SuppressWarnings("Duplicates")
 public class CachedDBService implements DBService {
     private final DBService dbService;

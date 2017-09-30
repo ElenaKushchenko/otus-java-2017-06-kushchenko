@@ -23,10 +23,7 @@ public class AppContext {
 
     @Bean
     public MessageSystem messageSystem() {
-        MessageSystem ms = new MessageSystem();
-        ms.start();
-
-        return ms;
+        return new MessageSystem();
     }
 
     @Bean
@@ -53,5 +50,10 @@ public class AppContext {
         service.init();
 
         return service;
+    }
+
+    @Bean
+    public AppListener appListener() {
+        return new AppListener();
     }
 }
