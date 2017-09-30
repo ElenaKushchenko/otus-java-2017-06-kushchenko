@@ -3,7 +3,7 @@ package ru.otus.kushchenko.ms.servlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-import ru.otus.kushchenko.ms.persistence.CachedDBService;
+import ru.otus.kushchenko.ms.messageSystem.addressee.AddressedFrontendService;
 import ru.otus.kushchenko.ms.servlet.util.ServletUtil;
 
 import javax.servlet.ServletConfig;
@@ -17,7 +17,7 @@ import java.io.IOException;
 public class UserServlet extends HttpServlet {
 
     @Autowired
-    private CachedDBService dbService;
+    private AddressedFrontendService frontendService;
 
 
     public void init(ServletConfig config) throws ServletException {
@@ -29,6 +29,6 @@ public class UserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String id = request.getParameter("id");
 
-        ServletUtil.setBody(response, dbService.get(Long.valueOf(id)));
+        ServletUtil.setBody(response, frontendService.getUserById(Long.valueOf(id)));
     }
 }

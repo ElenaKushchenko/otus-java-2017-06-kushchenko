@@ -3,8 +3,8 @@ package ru.otus.kushchenko.ms.servlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import ru.otus.kushchenko.ms.messageSystem.addressee.AddressedFrontendService;
 import ru.otus.kushchenko.ms.model.UserDataSet;
-import ru.otus.kushchenko.ms.persistence.CachedDBService;
 import ru.otus.kushchenko.ms.servlet.util.ServletUtil;
 
 import javax.servlet.ServletConfig;
@@ -20,7 +20,7 @@ public class LoginServlet extends HttpServlet {
     private static final String LOGIN_ATTRIBUTE = "user";
 
     @Autowired
-    private CachedDBService dbService;
+    private AddressedFrontendService frontendService;
 
 
     public void init(ServletConfig config) throws ServletException {
@@ -45,7 +45,7 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         UUID uuid = UUID.nameUUIDFromBytes(password.getBytes());
-        UserDataSet user = dbService.getByName(username);
+        UserDataSet user = frontendService.getUserByName(username);
 
         if (user != null && uuid.equals(user.getPassword())) {
             ServletUtil.saveToSession(request, LOGIN_ATTRIBUTE, user);
