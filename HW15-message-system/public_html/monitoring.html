@@ -1,0 +1,49 @@
+<html xmlns="http://www.w3.org/1999/xhtml" content="text/html;">
+<head>
+    <meta charset="UTF-8">
+    <title>HW13-IoC</title>
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
+    <link rel="stylesheet" href="css/main.css"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/monitoring.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <h2 id="greeting">Hello!</h2>
+    <div id="monitoring" class="block monitoring" style="display: none">
+        <div class="section">
+            <h3>Cache Info</h3>
+            <img id="refresh" class="icon" src="img/refresh.png">
+        </div>
+        <div class="parameter">
+            Count: <span id="count"></span>
+        </div>
+        <div class="parameter">
+            Hit: <span id="hit"></span>
+        </div>
+        <div class="parameter">
+            Miss: <span id="miss"></span>
+        </div>
+        <div class="parameter">
+            Max elements: <span id="maxElements"></span>
+        </div>
+        <div class="parameter">
+            Life time: <span id="lifeTime"></span>
+        </div>
+        <div class="parameter">
+            Idle time: <span id="idleTime"></span>
+        </div>
+        <div class="section">
+            <h4>Get user by id:</h4>
+            <form id="userForm">
+                <input type="number" name="id" min="0" required>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+    <div id="accessWarning" hidden>Cache information is not available to you.</div>
+    <a id="changeAccount">Switch account</a>
+</div>
+</body>
+</html>
