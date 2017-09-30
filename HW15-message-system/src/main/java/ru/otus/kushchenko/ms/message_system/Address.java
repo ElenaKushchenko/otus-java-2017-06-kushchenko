@@ -1,4 +1,4 @@
-package ru.otus.kushchenko.ms.messageSystem;
+package ru.otus.kushchenko.ms.message_system;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

@@ -1,8 +1,8 @@
-package ru.otus.kushchenko.ms.messageSystem;
+package ru.otus.kushchenko.ms.message_system;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import ru.otus.kushchenko.ms.messageSystem.addressee.Addressee;
+import ru.otus.kushchenko.ms.message_system.addressee.Addressee;
 
 @Getter
 @AllArgsConstructor

@@ -1,6 +1,6 @@
-package ru.otus.kushchenko.ms.messageSystem;
+package ru.otus.kushchenko.ms.message_system;
 
-import ru.otus.kushchenko.ms.messageSystem.addressee.Addressee;
+import ru.otus.kushchenko.ms.message_system.addressee.Addressee;
 
 import java.util.ArrayList;
 import java.util.HashMap;

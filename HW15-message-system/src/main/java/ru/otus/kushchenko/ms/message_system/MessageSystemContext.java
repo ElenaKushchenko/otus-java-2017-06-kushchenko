@@ -1,4 +1,4 @@
-package ru.otus.kushchenko.ms.messageSystem;
+package ru.otus.kushchenko.ms.message_system;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -3,7 +3,7 @@ package ru.otus.kushchenko.ms.servlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-import ru.otus.kushchenko.ms.messageSystem.addressee.AddressedFrontendService;
+import ru.otus.kushchenko.ms.message_system.addressee.AddressedFrontendService;
 import ru.otus.kushchenko.ms.servlet.util.ServletUtil;
 
 import javax.servlet.ServletConfig;
@@ -15,6 +15,7 @@ import java.io.IOException;
 
 @Configurable
 public class UserServlet extends HttpServlet {
+    private static final String ID_PARAM = "id";
 
     @Autowired
     private AddressedFrontendService frontendService;
@@ -27,7 +28,7 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String id = request.getParameter("id");
+        String id = request.getParameter(ID_PARAM);
 
         ServletUtil.setBody(response, frontendService.getUserById(Long.valueOf(id)));
     }

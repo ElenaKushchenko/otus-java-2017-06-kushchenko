@@ -1,24 +1,25 @@
-package ru.otus.kushchenko.ms.messageSystem.addressee;
+package ru.otus.kushchenko.ms.message_system.addressee;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.otus.kushchenko.ms.cache.CacheInfo;
-import ru.otus.kushchenko.ms.messageSystem.Address;
-import ru.otus.kushchenko.ms.messageSystem.MessageSystemContext;
+import ru.otus.kushchenko.ms.message_system.Address;
+import ru.otus.kushchenko.ms.message_system.MessageSystemContext;
 import ru.otus.kushchenko.ms.model.UserDataSet;
 import ru.otus.kushchenko.ms.persistence.CachedDBService;
 
 @Component
 public class AddressedDBService implements AddressedService {
-    private final Address address = new Address("db");
+    private final Address address;
     private final MessageSystemContext context;
     private final CachedDBService dbService;
 
 
     @Autowired
-    public AddressedDBService(MessageSystemContext context, CachedDBService dbService){
+    public AddressedDBService(MessageSystemContext context, CachedDBService dbService, Address address){
         this.context = context;
         this.dbService = dbService;
+        this.address = address;
     }
 
 

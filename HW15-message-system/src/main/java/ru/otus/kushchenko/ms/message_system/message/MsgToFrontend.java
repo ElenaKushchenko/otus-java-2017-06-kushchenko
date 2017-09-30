@@ -1,9 +1,9 @@
-package ru.otus.kushchenko.ms.messageSystem.message;
+package ru.otus.kushchenko.ms.message_system.message;
 
-import ru.otus.kushchenko.ms.messageSystem.Address;
-import ru.otus.kushchenko.ms.messageSystem.Message;
-import ru.otus.kushchenko.ms.messageSystem.addressee.AddressedFrontendService;
-import ru.otus.kushchenko.ms.messageSystem.addressee.Addressee;
+import ru.otus.kushchenko.ms.message_system.Address;
+import ru.otus.kushchenko.ms.message_system.Message;
+import ru.otus.kushchenko.ms.message_system.addressee.AddressedFrontendService;
+import ru.otus.kushchenko.ms.message_system.addressee.Addressee;
 
 public abstract class MsgToFrontend extends Message {
 
@@ -17,7 +17,7 @@ public abstract class MsgToFrontend extends Message {
         if (addressee instanceof AddressedFrontendService) {
             exec((AddressedFrontendService) addressee);
         } else {
-            throw new RuntimeException("");
+            throw new RuntimeException("Incorrect Addressee");
         }
     }
 

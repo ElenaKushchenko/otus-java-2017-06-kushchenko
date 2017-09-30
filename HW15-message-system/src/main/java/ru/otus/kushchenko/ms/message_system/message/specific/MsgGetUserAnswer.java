@@ -1,8 +1,8 @@
-package ru.otus.kushchenko.ms.messageSystem.message.specific;
+package ru.otus.kushchenko.ms.message_system.message.specific;
 
-import ru.otus.kushchenko.ms.messageSystem.Address;
-import ru.otus.kushchenko.ms.messageSystem.addressee.AddressedFrontendService;
-import ru.otus.kushchenko.ms.messageSystem.message.MsgToFrontend;
+import ru.otus.kushchenko.ms.message_system.Address;
+import ru.otus.kushchenko.ms.message_system.addressee.AddressedFrontendService;
+import ru.otus.kushchenko.ms.message_system.message.MsgToFrontend;
 import ru.otus.kushchenko.ms.model.UserDataSet;
 
 public class MsgGetUserAnswer extends MsgToFrontend {

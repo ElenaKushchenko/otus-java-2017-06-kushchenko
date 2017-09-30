@@ -3,7 +3,7 @@ package ru.otus.kushchenko.ms.servlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-import ru.otus.kushchenko.ms.messageSystem.addressee.AddressedFrontendService;
+import ru.otus.kushchenko.ms.message_system.addressee.AddressedFrontendService;
 import ru.otus.kushchenko.ms.servlet.util.ServletUtil;
 
 import javax.servlet.ServletConfig;

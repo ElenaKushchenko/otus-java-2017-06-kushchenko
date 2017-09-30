@@ -2,16 +2,19 @@ package ru.otus.kushchenko.ms;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.otus.kushchenko.ms.messageSystem.Address;
-import ru.otus.kushchenko.ms.messageSystem.MessageSystem;
-import ru.otus.kushchenko.ms.messageSystem.MessageSystemContext;
-import ru.otus.kushchenko.ms.messageSystem.addressee.AddressedDBService;
-import ru.otus.kushchenko.ms.messageSystem.addressee.AddressedFrontendService;
+import ru.otus.kushchenko.ms.message_system.Address;
+import ru.otus.kushchenko.ms.message_system.MessageSystem;
+import ru.otus.kushchenko.ms.message_system.MessageSystemContext;
+import ru.otus.kushchenko.ms.message_system.addressee.AddressedDBService;
+import ru.otus.kushchenko.ms.message_system.addressee.AddressedFrontendService;
 import ru.otus.kushchenko.ms.persistence.CachedDBService;
 import ru.otus.kushchenko.ms.persistence.HibernateDBService;
 
 @Configuration
 public class AppContext {
+    private final Address frontAddress = new Address("frontend");
+    private final Address dbAddress = new Address("db");
+
 
     @Bean
     public CachedDBService dbService() {
@@ -30,9 +33,7 @@ public class AppContext {
     public MessageSystemContext messageSystemContext() {
         MessageSystemContext context = new MessageSystemContext(messageSystem());
 
-        Address frontAddress = new Address("frontend");
         context.setFromAddress(frontAddress);
-        Address dbAddress = new Address("db");
         context.setToAddress(dbAddress);
 
         return context;
@@ -40,7 +41,7 @@ public class AppContext {
 
     @Bean
     public AddressedFrontendService frontendService() {
-        AddressedFrontendService service = new AddressedFrontendService(messageSystemContext());
+        AddressedFrontendService service = new AddressedFrontendService(messageSystemContext(), frontAddress);
         service.init();
 
         return service;
@@ -48,7 +49,7 @@ public class AppContext {
 
     @Bean
     public AddressedDBService addressedDBService() {
-        AddressedDBService service = new AddressedDBService(messageSystemContext(), dbService());
+        AddressedDBService service = new AddressedDBService(messageSystemContext(), dbService(), dbAddress);
         service.init();
 
         return service;

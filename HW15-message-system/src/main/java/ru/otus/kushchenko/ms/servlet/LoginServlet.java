@@ -3,7 +3,7 @@ package ru.otus.kushchenko.ms.servlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-import ru.otus.kushchenko.ms.messageSystem.addressee.AddressedFrontendService;
+import ru.otus.kushchenko.ms.message_system.addressee.AddressedFrontendService;
 import ru.otus.kushchenko.ms.model.UserDataSet;
 import ru.otus.kushchenko.ms.servlet.util.ServletUtil;
 
@@ -18,6 +18,8 @@ import java.util.UUID;
 @Configurable
 public class LoginServlet extends HttpServlet {
     private static final String LOGIN_ATTRIBUTE = "user";
+    private static final String USERNAME_PARAM = "username";
+    private static final String PASSWORD_PARAM = "password";
 
     @Autowired
     private AddressedFrontendService frontendService;
@@ -41,8 +43,8 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        String username = request.getParameter(USERNAME_PARAM);
+        String password = request.getParameter(PASSWORD_PARAM);
 
         UUID uuid = UUID.nameUUIDFromBytes(password.getBytes());
         UserDataSet user = frontendService.getUserByName(username);

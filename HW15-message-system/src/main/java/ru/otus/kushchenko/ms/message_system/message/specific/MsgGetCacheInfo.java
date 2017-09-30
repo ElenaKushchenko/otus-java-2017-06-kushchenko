@@ -1,10 +1,10 @@
-package ru.otus.kushchenko.ms.messageSystem.message.specific;
+package ru.otus.kushchenko.ms.message_system.message.specific;
 
 import ru.otus.kushchenko.ms.cache.CacheInfo;
-import ru.otus.kushchenko.ms.messageSystem.Address;
-import ru.otus.kushchenko.ms.messageSystem.MessageSystem;
-import ru.otus.kushchenko.ms.messageSystem.addressee.AddressedDBService;
-import ru.otus.kushchenko.ms.messageSystem.message.MsgToDB;
+import ru.otus.kushchenko.ms.message_system.Address;
+import ru.otus.kushchenko.ms.message_system.MessageSystem;
+import ru.otus.kushchenko.ms.message_system.addressee.AddressedDBService;
+import ru.otus.kushchenko.ms.message_system.message.MsgToDB;
 
 public class MsgGetCacheInfo extends MsgToDB {
     private final MessageSystem messageSystem;
